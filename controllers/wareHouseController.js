@@ -1,7 +1,7 @@
 // controllers/warehouseController.js
 const warehouseModel = require('../models/warehouseModel');
 
-async function getWarehouse(req, res) {
+const getWarehouse = async (req, res) => {
   const id = req.params.warehouseId;
 
   try {
@@ -17,6 +17,17 @@ async function getWarehouse(req, res) {
   }
 }
 
+const getWarehouses = async (_req, res) => {
+    try {
+        const warehouses = await warehouseModel.getWarehouses();
+        res.status(200).json(warehouses);
+    } catch (err) {
+        res.status(500).send(`Error retrieving warehouse: ${err}`);
+    }
+}
+
+
 module.exports = {
   getWarehouse,
+  getWarehouses
 };
