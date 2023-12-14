@@ -21,8 +21,6 @@ try {
 }
 
 const postInventory = async (req,res) => {
-  console.log(req.body);
-  
   try {
     const inventory = req.body;
     const newInventory = await inventoryModel.postInventory(inventory);
