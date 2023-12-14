@@ -21,7 +21,17 @@ const getWarehouses = async () => {
 
 } 
 
+const addNewWarehouse = async (warehouseData) => {
+  try{
+    const [id] = await knex('warehouses').insert(warehouseData);
+    return id;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   getWarehouseById,
-  getWarehouses
+  getWarehouses,
+  addNewWarehouse
 };
