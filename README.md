@@ -16,3 +16,12 @@ http://localhost:8080/api/inventories
 http://localhost:8080/api/inventories/:id
 (GET) method - GET a inventory data by Id 
 
+http://localhost:8080/api/inventories
+(POST) method - POST Add new inventory data
+
+http://localhost:8080/api/inventories/:id
+(PUT) method - UPDATE update existed inventory data (by ID) to new data
+
+http://localhost:8080/api/inventories/:id
+(DELETE) method - DELETE delete existed inventory data (by ID)
+
