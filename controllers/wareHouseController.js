@@ -3,6 +3,7 @@ const Joi = require('joi');
 // controllers/warehouseController.js
 const warehouseModel = require('../models/warehouseModel');
 
+
 const getWarehouse = async (req, res) => {
   const id = req.params.warehouseId;
 
@@ -20,12 +21,12 @@ const getWarehouse = async (req, res) => {
 }
 
 const getWarehouses = async (_req, res) => {
-  try {
-    const warehouses = await warehouseModel.getWarehouses();
-    res.status(200).json(warehouses);
-  } catch (err) {
-    res.status(500).send(`Error retrieving warehouse: ${err}`);
-  }
+    try {
+        const warehouses = await warehouseModel.getWarehouses();
+        res.status(200).json(warehouses);
+    } catch (err) {
+        res.status(500).send(`Error retrieving warehouse: ${err}`);
+    }
 }
 
 //--------Add New Warehouse-------//

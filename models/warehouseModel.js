@@ -18,7 +18,6 @@ const getWarehouses = async () => {
   } catch (err) {
     throw err;
   }
-
 } 
 
 const addNewWarehouse = async (warehouseData) => {
