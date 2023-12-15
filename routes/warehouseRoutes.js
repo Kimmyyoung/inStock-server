@@ -9,7 +9,10 @@ router
 .post(warehouseController.addNewWarehouse);
 
 
-router.route('/warehouses/:warehouseId').get(warehouseController.getWarehouse);
+router
+.route('/warehouses/:warehouseId')
+.get(warehouseController.getWarehouse)
+.put(warehouseController.editWarehouse);
 
 module.exports = router;
 
