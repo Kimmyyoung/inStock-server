@@ -2,7 +2,10 @@ const knex = require('knex')(require('./../knexfile'));
 
 const getInventories = async () => {
   try {
-    const inventories = await knex('inventories');
+    const inventories = await knex('inventories')
+      .select('inventories.*', 'warehouses.warehouse_name')
+      .join('warehouses', 'inventories.warehouse_id', '=', 'warehouses.id');
+
     return inventories;
   } catch (err) {
     throw err;
