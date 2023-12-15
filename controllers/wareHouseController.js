@@ -29,7 +29,7 @@ const getWarehouses = async (_req, res) => {
     }
 }
 
-//--------Add New Warehouse-------//
+//--------Validation for Warehouse Data-------//
 const warehouseData = Joi.object({
   warehouse_name: Joi.string().required(),
   address: Joi.string().required(),
@@ -41,6 +41,7 @@ const warehouseData = Joi.object({
   contact_email: Joi.string().required().email(),
 });
 
+//--------Add New Warehouse-------//
 const addNewWarehouse = async (req, res) => {
   const validation = warehouseData.validate(req.body);
   const error = validation.error;
@@ -66,8 +67,45 @@ const addNewWarehouse = async (req, res) => {
   }
 };
 
+//--------Edit Existing Warehouse-------//
+const editWarehouse = async (req, res) => {
+  const validation = warehouseData.validate(req.body);
+  const error = validation.error;
+  const value = validation.value;
+  if (error) {
+    return res.status(400).json({
+      error: error.details[0].message
+    });
+  }
+
+  try {
+    const warehouseId = req.params.warehouseId;
+    // Check if warehouse with given ID exists
+    const existingWarehouse = await warehouseModel.getWarehouseById(warehouseId);
+    if (!existingWarehouse) {
+      return res.status(404).json({ 
+        error: `Warehouse with ID:${warehouseId} not found` 
+      });
+    } else {
+      // Update warehouse details
+      await warehouseModel.editWarehouse(warehouseId, req.body);
+
+      // Fetch updated warehouse details
+      const updatedWarehouse = await warehouseModel.getWarehouseById(warehouseId);
+
+      res.status(200).json(updatedWarehouse);
+    }
+
+  }catch (error) {
+    console.error('Error updating warehouse:', error);
+    res.status(500).json({ 
+      message: `Unable to update warehouse: ${error}`});
+  }
+}
+
 module.exports = {
   getWarehouse,
   getWarehouses,
-  addNewWarehouse
+  addNewWarehouse,
+  editWarehouse
 };
