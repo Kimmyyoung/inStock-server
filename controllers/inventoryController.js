@@ -23,14 +23,12 @@ try {
 const getInventoryByWarehouseId = async (req, res) => {
   try {
     const id = req.params.warehouse_id;
-    console.log(id);
-    console.log('working')
     const inventory = await inventoryModel.getInventoryByWarehouseId(id);
     res.status(201).json(inventory);
   } catch (err) {
     res.status(400).send(`Error retrieving inventory: ${err}`);
   }
-  console.log('hello')
+
 }
 
 const postInventory = async (req,res) => {
