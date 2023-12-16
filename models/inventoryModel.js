@@ -2,7 +2,10 @@ const knex = require('knex')(require('./../knexfile'));
 
 const getInventories = async () => {
   try {
-    const inventories = await knex('inventories');
+    const inventories = await knex('inventories')
+      .select('inventories.*', 'warehouses.warehouse_name')
+      .join('warehouses', 'inventories.warehouse_id', '=', 'warehouses.id');
+
     return inventories;
   } catch (err) {
     throw err;
@@ -46,11 +49,20 @@ const deleteInventory = async (id) => {
   }
 };
 
+const deleteWarehouseInventories = async (warehouseId) => {
+  try {
+    const deletedInventoriesCount = await knex('inventories').where({ warehouse_id: warehouseId }).del();
+    return deletedInventoriesCount;
+  } catch (err) {
+    throw err;
+  }
+};
 
 module.exports = {
   getInventoryById,
   getInventories,
   postInventory,
   updateInventory,
-  deleteInventory
+  deleteInventory,
+  deleteWarehouseInventories
 };

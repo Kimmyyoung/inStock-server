@@ -29,8 +29,28 @@ const addNewWarehouse = async (warehouseData) => {
   }
 }
 
+const editWarehouse = async (id, warehouseData) => {
+  try {
+    const updatedWarehouse = await knex('warehouses').where({ id }).update(warehouseData);
+    return updatedWarehouse;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const deleteWarehouse = async (id) => {
+  try {
+    const deletedWarehouse = await knex('warehouses').where({ id }).del();
+    return deletedWarehouse;
+  }catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   getWarehouseById,
   getWarehouses,
-  addNewWarehouse
+  addNewWarehouse,
+  editWarehouse, 
+  deleteWarehouse
 };
