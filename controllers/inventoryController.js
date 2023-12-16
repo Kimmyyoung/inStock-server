@@ -23,6 +23,9 @@ try {
 const getInventoryByWarehouseId = async (req, res) => {
   try {
     const id = req.params.warehouse_id;
+    if(!id) {
+      res.status(404).send(`Error retrieving inventory: ${err}`);
+    }
     const inventory = await inventoryModel.getInventoryByWarehouseId(id);
     res.status(201).json(inventory);
   } catch (err) {
