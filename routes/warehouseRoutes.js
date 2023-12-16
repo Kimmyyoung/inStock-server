@@ -14,5 +14,12 @@ router
 .get(warehouseController.getWarehouse)
 .put(warehouseController.editWarehouse);
 
+router
+  .route('/warehouses/:id')
+  .delete( async (req, res) => {
+    const id = req.params.id;
+    res.send("the id is: ", id);
+  })
+
 module.exports = router;
 
