@@ -8,8 +8,11 @@ router
 .get(warehouseController.getWarehouses)
 .post(warehouseController.addNewWarehouse);
 
-
-router.route('/warehouses/:warehouseId').get(warehouseController.getWarehouse);
+router
+.route('/warehouses/:warehouseId')
+.get(warehouseController.getWarehouse)
+.put(warehouseController.editWarehouse)
+.delete(warehouseController.deleteWarehouse);
 
 module.exports = router;
 
