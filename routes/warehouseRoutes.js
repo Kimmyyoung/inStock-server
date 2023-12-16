@@ -8,18 +8,11 @@ router
 .get(warehouseController.getWarehouses)
 .post(warehouseController.addNewWarehouse);
 
-
 router
 .route('/warehouses/:warehouseId')
 .get(warehouseController.getWarehouse)
-.put(warehouseController.editWarehouse);
-
-router
-  .route('/warehouses/:id')
-  .delete( async (req, res) => {
-    const id = req.params.id;
-    res.send("the id is: ", id);
-  })
+.put(warehouseController.editWarehouse)
+.delete(warehouseController.deleteWarehouse);
 
 module.exports = router;
 

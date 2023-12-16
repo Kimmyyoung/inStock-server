@@ -105,9 +105,25 @@ const editWarehouse = async (req, res) => {
   }
 }
 
+const deleteWarehouse = async (req, res) => {
+    const id = req.params.warehouseId;
+    try {
+        const deletedWarehouse = await warehouseModel.deleteWarehouse(id);
+        if (deletedWarehouse) {
+            res.status(204).send("warehouse deleted successfully.");
+        } else {
+            res.status(404).send("could not delete warehouse, ID number not found");
+        }
+    } catch (err) {
+        res.status(500).send(`Error deleting warehouse: ${err}`);
+    }
+
+}
+
 module.exports = {
   getWarehouse,
   getWarehouses,
   addNewWarehouse,
-  editWarehouse
+  editWarehouse, 
+  deleteWarehouse
 };
