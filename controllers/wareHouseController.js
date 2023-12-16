@@ -1,29 +1,31 @@
 const Joi = require('joi');
 
-// controllers/warehouseController.js
 const warehouseModel = require('../models/warehouseModel');
+const inventoryModel = require('../models/inventoryModel');
 
 
 const getWarehouse = async (req, res) => {
-  const id = req.params.warehouseId;
-
-  try {
-    const warehouse = await warehouseModel.getWarehouseById(id);
-
-    if (warehouse) {
-      res.status(200).json(warehouse);
-    } else {
-      res.status(404).send(`Warehouse with ID ${id} not found`);
+    const id = req.params.warehouseId;
+    try {
+        const warehouse = await warehouseModel.getWarehouseById(id);
+        if (warehouse) {
+            res.status(200).json(warehouse);
+        } else {
+            res.status(404).send(`Warehouse with ID ${id} not found`);
+        }
+    } catch (err) {
+        res.status(500).send(`Error retrieving warehouse: ${err}`);
     }
-  } catch (err) {
-    res.status(500).send(`Error retrieving warehouse: ${err}`);
-  }
 }
 
 const getWarehouses = async (_req, res) => {
     try {
         const warehouses = await warehouseModel.getWarehouses();
-        res.status(200).json(warehouses);
+        if (warehouses) {
+            res.status(200).json(warehouses);
+        } else {
+            res.status(404).send(`Warehouses not found`);
+        }
     } catch (err) {
         res.status(500).send(`Error retrieving warehouse: ${err}`);
     }
@@ -103,9 +105,26 @@ const editWarehouse = async (req, res) => {
   }
 }
 
+// need to also delete all corresponding inventory data. 
+const deleteWarehouse = async (req, res) => {
+    const id = req.params.warehouseId;
+    try {
+        const deletedWarehouse = await warehouseModel.deleteWarehouse(id);
+        const deletedInventories = await inventoryModel.deleteInventoriesInWarehouse(id);
+        if (deletedWarehouse) {
+            res.status(204).send(`warehouse and associated inventories successfully deleted: ${deletedInventories}`);
+        } else {
+            res.status(404).send("could not delete warehouse, ID number not found");
+        }
+    } catch (err) {
+        res.status(500).send(`Error deleting warehouse: ${err}`);
+    }
+}
+
 module.exports = {
   getWarehouse,
   getWarehouses,
   addNewWarehouse,
-  editWarehouse
+  editWarehouse, 
+  deleteWarehouse
 };

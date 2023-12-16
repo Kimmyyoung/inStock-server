@@ -38,9 +38,19 @@ const editWarehouse = async (id, warehouseData) => {
   }
 }
 
+const deleteWarehouse = async (id) => {
+  try {
+    const deletedWarehouse = await knex('warehouses').where({ id }).del();
+    return deletedWarehouse;
+  }catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   getWarehouseById,
   getWarehouses,
   addNewWarehouse,
-  editWarehouse
+  editWarehouse, 
+  deleteWarehouse
 };
