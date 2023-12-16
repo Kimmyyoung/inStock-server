@@ -24,8 +24,9 @@ const postInventory = async (req,res) => {
   try {
     const inventory = req.body;
     const newInventory = await inventoryModel.postInventory(inventory);
-    res.status(200).json(newInventory);
-  }catch(err) {
+    const createdNewInventory = { ...newInventory };
+    res.status(201).json(createdNewInventory);
+    }catch(err) {
     res.status(500).send(`Error posting inventory: ${err}`);
   }
 }
