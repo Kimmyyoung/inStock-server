@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
-// controllers/warehouseController.js
 const warehouseModel = require('../models/warehouseModel');
+const inventoryModel = require('../models/inventoryModel');
 
 
 const getWarehouse = async (req, res) => {
@@ -105,19 +105,20 @@ const editWarehouse = async (req, res) => {
   }
 }
 
+// need to also delete all corresponding inventory data. 
 const deleteWarehouse = async (req, res) => {
     const id = req.params.warehouseId;
     try {
         const deletedWarehouse = await warehouseModel.deleteWarehouse(id);
+        const deletedInventories = await inventoryModel.deleteInventoriesInWarehouse(id);
         if (deletedWarehouse) {
-            res.status(204).send("warehouse deleted successfully.");
+            res.status(204).send(`warehouse and associated inventories successfully deleted: ${deletedInventories}`);
         } else {
             res.status(404).send("could not delete warehouse, ID number not found");
         }
     } catch (err) {
         res.status(500).send(`Error deleting warehouse: ${err}`);
     }
-
 }
 
 module.exports = {

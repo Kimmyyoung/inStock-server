@@ -49,11 +49,20 @@ const deleteInventory = async (id) => {
   }
 };
 
+const deleteWarehouseInventories = async (warehouseId) => {
+  try {
+    const deletedInventoriesCount = await knex('inventories').where({ warehouse_id: warehouseId }).del();
+    return deletedInventoriesCount;
+  } catch (err) {
+    throw err;
+  }
+};
 
 module.exports = {
   getInventoryById,
   getInventories,
   postInventory,
   updateInventory,
-  deleteInventory
+  deleteInventory,
+  deleteWarehouseInventories
 };
