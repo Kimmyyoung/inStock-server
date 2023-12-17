@@ -1,8 +1,6 @@
 const validator = require("validator");
 const inventoryModel = require("../models/inventoryModel");
 
-const inventoryModel = require('../models/inventoryModel');
-
 const getInventories = async (req,res) => {
 try {
   const inventories = await inventoryModel.getInventories();
@@ -34,21 +32,6 @@ const getInventoryByWarehouseId = async (req, res) => {
     res.status(400).send(`Error retrieving inventory: ${err}`);
   }
 
-}
-
-const postInventory = async (req,res) => {
-  try {
-    const inventory = req.body;
-    const newInventory = await inventoryModel.postInventory(inventory);
-    const createdNewInventory = { ...newInventory };
-    console.log(createdNewInventory);
-    res.status(201).json(createdNewInventory);
-    }catch(err) {
-    res.status(400).send(`Error posting inventory: ${err}`);
-    // to do : validation Response returns 400 if unsuccessful because of missing properties in the request body
-    // Response returns 400 if the warehouse_id value does not exist in the warehouses table
-    // Response returns 400 if the quantity is not a number
-  }
 }
 
 // Validator Validation for post new inventory
