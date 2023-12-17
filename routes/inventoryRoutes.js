@@ -13,3 +13,8 @@ router.route('/api/inventories/:id').delete(inventoryController.deleteInventory)
 
 module.exports = router;
 
+
+
+
+
+

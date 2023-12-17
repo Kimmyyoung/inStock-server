@@ -1,3 +1,5 @@
+const validator = require("validator");
+const inventoryModel = require("../models/inventoryModel");
 
 const inventoryModel = require('../models/inventoryModel');
 
@@ -49,7 +51,38 @@ const postInventory = async (req,res) => {
   }
 }
 
-const updateInventory = async (req,res) => {
+// Validator Validation for post new inventory
+
+const postInventory = async (req, res) => {
+  try {
+    const { warehouse_id, item_name, description, category, status, quantity } =
+      req.body;
+
+    if (
+      !warehouse_id ||
+      !item_name ||
+      !description ||
+      !category ||
+      !status ||
+      !quantity
+    ) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    if (!validator.isNumeric(quantity)) {
+      return res
+        .status(400)
+        .json({ error: "Quantity must be a valid number." });
+    }
+
+    const newInventory = await inventoryModel.postInventory(req.body);
+    res.status(201).json(newInventory);
+  } catch (err) {
+    res.status(400).send(`Error posting inventory: ${err}`);
+  }
+};
+
+const updateInventory = async (req, res) => {
   try {
     const id = req.params.id;
     if(!id) {
@@ -59,15 +92,18 @@ const updateInventory = async (req,res) => {
     // Response returns 400 if the warehouse_id value does not exist in the warehouses table
     // Response returns 400 if the quantity is not a number
     const inventory = req.body;
-    const updatedInventory = await inventoryModel.updateInventory(id,inventory);
+    const updatedInventory = await inventoryModel.updateInventory(
+      id,
+      inventory
+    );
     res.status(200).json(updatedInventory);
   } catch(err) {
     res.status(400).send(`Error updating inventory: ${err}`);
   }
-}
+};
 
-const deleteInventory = async (req,res) => {
-  try{
+const deleteInventory = async (req, res) => {
+  try {
     const id = req.params.id;
     if(!id) {
       res.status(404).send(`Error deleting inventory: ${err}`);
@@ -77,16 +113,13 @@ const deleteInventory = async (req,res) => {
   }catch(err) {
     res.status(400).send(`Error deleting inventory: ${err}`);
   }
-}
+};
 
-
-
-module.exports = { 
+module.exports = {
   getInventories,
   getInventoryById,
   getInventoryByWarehouseId,
   postInventory,
   updateInventory,
-  deleteInventory
-}
-
+  deleteInventory,
+};
