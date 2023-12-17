@@ -32,7 +32,7 @@ const getInventoryByWarehouseId = async (id) => {
 
 const postInventory = async (inventory) => {
   try {
-    const newInventory = await knex('inventories').insert(inventory);
+    const [newInventory] = await knex('inventories').insert(inventory);
     return newInventory;
   } catch (err) {
     throw err;
