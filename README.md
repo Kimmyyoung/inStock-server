@@ -16,6 +16,9 @@ http://localhost:8080/api/inventories
 http://localhost:8080/api/inventories/:id
 (GET) method - GET a inventory data by Id 
 
+http://localhost:8080/api/inventories/:id
+(GET) method - GET a inventories data by warehouse_id
+
 http://localhost:8080/api/inventories
 (POST) method - POST Add new inventory data
 
