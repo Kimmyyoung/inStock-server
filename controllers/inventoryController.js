@@ -1,5 +1,6 @@
 const validator = require("validator");
 const inventoryModel = require("../models/inventoryModel");
+const knex = require('knex')(require('./../knexfile'));
 
 const getInventories = async (req,res) => {
 try {
@@ -102,15 +103,29 @@ const updateInventory = async (req, res) => {
 };
 
 
+
 const deleteInventory = async (req, res) => {
   try {
     const id = req.params.id;
-    if(!id) {
-      res.status(404).send(`Error deleting inventory: ${err}`);
+
+    if (!id) {
+      return res.status(404).send(`Error deleting inventory: Inventory ID is missing.`);
     }
+
+    if (!validator.isNumeric(id)) {
+      return res.status(400).json({ error: "Inventory ID must be a valid number." });
+    }
+
+    const existingInventory = await knex('inventories').where({ id }).first();
+
+    if (!existingInventory) {
+      return res.status(404).json({ error: `Inventory with ID ${id} not found.` });
+    }
+
     const deletedInventory = await inventoryModel.deleteInventory(id);
     res.status(204).json(deletedInventory);
-  }catch(err) {
+
+  } catch (err) {
     res.status(400).send(`Error deleting inventory: ${err}`);
   }
 };
