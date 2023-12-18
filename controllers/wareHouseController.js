@@ -110,13 +110,14 @@ const deleteWarehouse = async (req, res) => {
     const id = req.params.warehouseId;
     try {
         const deletedWarehouse = await warehouseModel.deleteWarehouse(id);
-        const deletedInventories = await inventoryModel.deleteInventoriesInWarehouse(id);
+        const deletedInventories = await inventoryModel.deleteWarehouseInventories(id);
         if (deletedWarehouse) {
             res.status(204).send(`warehouse and associated inventories successfully deleted: ${deletedInventories}`);
         } else {
             res.status(404).send("could not delete warehouse, ID number not found");
         }
     } catch (err) {
+        console.log("the error: ", err);
         res.status(500).send(`Error deleting warehouse: ${err}`);
     }
 }
