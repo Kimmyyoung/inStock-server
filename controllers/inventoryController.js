@@ -34,8 +34,6 @@ const getInventoryByWarehouseId = async (req, res) => {
 
 }
 
-// Validator Validation for post new inventory
-
 const postInventory = async (req, res) => {
   try {
     const { warehouse_id, item_name, description, category, status, quantity } =
@@ -68,22 +66,41 @@ const postInventory = async (req, res) => {
 const updateInventory = async (req, res) => {
   try {
     const id = req.params.id;
-    if(!id) {
-      res.status(404).send(`Error updating inventory: ${err}`);
+    if (!id) {
+      return res.status(404).send(`Error updating inventory: Inventory ID not found.`);
     }
-    // to do : validation Response returns 400 if unsuccessful because of missing properties in the request body
-    // Response returns 400 if the warehouse_id value does not exist in the warehouses table
-    // Response returns 400 if the quantity is not a number
+
+    const { warehouse_id, item_name, description, category, status, quantity } =
+      req.body;
+
+    if (
+      !warehouse_id ||
+      !item_name ||
+      !description ||
+      !category ||
+      !status ||
+      !quantity
+    ) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const warehouseExists = await inventoryModel.getWarehouseById(warehouse_id);
+    if (!warehouseExists) {
+      return res.status(400).json({ error: "Warehouse with the given ID does not exist." });
+    }
+
+    if (!validator.isNumeric(quantity)) {
+      return res.status(400).json({ error: "Quantity must be a valid number." });
+    }
+
     const inventory = req.body;
-    const updatedInventory = await inventoryModel.updateInventory(
-      id,
-      inventory
-    );
+    const updatedInventory = await inventoryModel.updateInventory(id, inventory);
     res.status(200).json(updatedInventory);
-  } catch(err) {
+  } catch (err) {
     res.status(400).send(`Error updating inventory: ${err}`);
   }
 };
+
 
 const deleteInventory = async (req, res) => {
   try {
