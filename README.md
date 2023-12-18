@@ -1,20 +1,21 @@
 ### API Document
 
+
 ##### 📍 Warehouse 
 
-http://localhost:8080/warehouses
+http://localhost:8080/api/warehouses
 (GET) method - GET All warehouses data
 
-http://localhost:8080/warehouses
+http://localhost:8080/api/warehouses
 (POST) method - POST a new warehouse to db
 
-http://localhost:8080/warehouses/:warehouseId
+http://localhost:8080/api/warehouses/:warehouseId
 (GET) method - GET a warehouse data by Id
 
-http://localhost:8080/warehouses/:warehouseId
+http://localhost:8080/api/warehouses/:warehouseId
 (PUT) method - PUT (edit) a warehouse by supplying it's id
 
-http://localhost:8080/warehouses/:warehouseId
+http://localhost:8080/api/warehouses/:warehouseId
 (DELETE) method - DELETE a warehouse by supplying it's id
 
 
