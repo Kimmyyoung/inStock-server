@@ -12,5 +12,5 @@ module.exports = {
   //   user: process.env.DB_USER,
   //   password: process.env.DB_PASSWORD,
   // }
-  connection : process.env.CLEARDB_DATABASE_URL,
+  connection : process.env.JAWSDB_URL,
 };
