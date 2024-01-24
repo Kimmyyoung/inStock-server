@@ -1,4 +1,5 @@
 const knex = require('knex')(require('./../knexfile'));
+const bcrypt = require('bcrypt');
 
 const getUsers = async () => {
   try {
@@ -11,7 +12,12 @@ const getUsers = async () => {
 
 const LoginUser = async (email, password) => {
   try {
-    const user = await knex('users').where({ email, password}.first());
+    const user = await knex('users').where({ email }.first());
+    const match = await bcrypt.compare(password, user.password);
+    if(!match) {
+      throw new Error('Incorrect password');
+    }
+    
     return user;
   }catch(err) {
     throw err;

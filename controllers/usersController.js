@@ -1,5 +1,7 @@
 const userModel = require('../models/userModel');
 const knex = require('knex')(require('./../knexfile'));
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const getUsers = async(req,res) => {
   try{
@@ -14,7 +16,25 @@ const LoginUser = async(req, res) => {
   try {
     const { email, password } = req.body;
     const user = await userModel.LoginUser(email, password);
-    res.status(200).json(user);
+    const payload = { id: user.id, email: user.email};
+
+    if(user) {
+      let token = jwt.sign(payload, process.env.SECRET_KEY, {
+        expiresIn: '1h'
+      });
+
+      console.log(token);
+
+      res.json({
+        success: true,
+        token: token
+      })
+    }else {
+      res.status(403).json({
+        success: false,
+        message: 'Incorrect username or password'
+      })
+    }
   }catch(err){
     res.status(400).send(`Error (Login): ${err}`);
   }
@@ -23,7 +43,9 @@ const LoginUser = async(req, res) => {
 const SignupUser = async (req, res) => {
   try{
     const {email, password, username} = req.body;
-    const newuser = await userModel.signupUser(email, password, username);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newuser = await userModel.signupUser(email, hashedPassword, username);
     res.status(200).json(newuser);
   }catch(err) {
     res.status(400).send(`Error (Signup): ${err}`);
