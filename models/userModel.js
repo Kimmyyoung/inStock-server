@@ -27,9 +27,13 @@ const LoginUser = async (email, password) => {
   }
 }
 
-const signupUser = async (user) => {
+const signupUser = async (email, password, username) => {
   try {
-    const newUser = await knex('users').insert(user);
+    const newUser = await knex('users').insert({
+      email: email,
+      password: password,
+      username: username,
+    });    
     return newUser;
   }catch(err) {
     throw err;
