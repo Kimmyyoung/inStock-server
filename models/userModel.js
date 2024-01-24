@@ -12,7 +12,7 @@ const getUsers = async () => {
 
 const LoginUser = async (email, password) => {
   try {
-    const user = await knex('users').where({ email }.first());
+    const user = await knex('users').where({ email }).first();
     const match = await bcrypt.compare(password, user.password);
     if(!match) {
       throw new Error('Incorrect password');
