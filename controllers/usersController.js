@@ -2,6 +2,7 @@ const userModel = require('../models/userModel');
 const knex = require('knex')(require('./../knexfile'));
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require("dotenv").config();
 
 const getUsers = async(req,res) => {
   try{
