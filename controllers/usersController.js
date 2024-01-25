@@ -24,8 +24,10 @@ const LoginUser = async(req, res) => {
         expiresIn: '1h'
       });
 
-      console.log(token);
-
+      if(token) {
+        localStorage.setItem('token', token);
+      }
+      
       res.json({
         success: true,
         token: token
